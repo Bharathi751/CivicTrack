@@ -57,43 +57,79 @@ export default function CitizenDashboard() {
         </Link>
       </div>
 
-      {/* KPI Cards */}
+      {/* KPI Cards (Clickable & Dynamic Navigation) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+        <Link
+          to="/citizen/my-reports"
+          className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md hover:border-blue-400 hover:scale-102 transition-all cursor-pointer group flex flex-col justify-between"
+          title="Click to view all your reported issues"
+        >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase text-slate-500">My Reports</span>
-            <FileText className="w-4 h-4 text-blue-600" />
+            <span className="text-xs font-bold uppercase text-slate-500 group-hover:text-blue-700 transition-colors">
+              My Reports
+            </span>
+            <FileText className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
           </div>
           <div className="text-2xl font-bold text-slate-900 mt-2">{myStats.total}</div>
-          <span className="text-[11px] text-slate-400">Total submitted</span>
-        </div>
+          <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-100">
+            <span className="text-[11px] text-slate-400">Total submitted</span>
+            <span className="text-[10px] text-blue-600 font-bold group-hover:underline">View all &rarr;</span>
+          </div>
+        </Link>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+        <Link
+          to="/citizen/my-reports?status=pending"
+          className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md hover:border-indigo-400 hover:scale-102 transition-all cursor-pointer group flex flex-col justify-between"
+          title="Click to view reports awaiting municipal review"
+        >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase text-slate-500">Awaiting Review</span>
-            <Clock className="w-4 h-4 text-indigo-500" />
+            <span className="text-xs font-bold uppercase text-indigo-600 group-hover:text-indigo-800 transition-colors">
+              Awaiting Review
+            </span>
+            <Clock className="w-4 h-4 text-indigo-500 group-hover:scale-110 transition-transform" />
           </div>
           <div className="text-2xl font-bold text-indigo-600 mt-2">{myStats.pending}</div>
-          <span className="text-[11px] text-slate-400">Under municipal triage</span>
-        </div>
+          <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-100">
+            <span className="text-[11px] text-slate-400">Under municipal triage</span>
+            <span className="text-[10px] text-indigo-600 font-bold group-hover:underline">Filter &rarr;</span>
+          </div>
+        </Link>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+        <Link
+          to="/citizen/my-reports?status=progress"
+          className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md hover:border-amber-400 hover:scale-102 transition-all cursor-pointer group flex flex-col justify-between"
+          title="Click to view reports with active repair crews dispatched"
+        >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase text-slate-500">Active Repair</span>
-            <Clock className="w-4 h-4 text-amber-500" />
+            <span className="text-xs font-bold uppercase text-amber-600 group-hover:text-amber-800 transition-colors">
+              Active Repair
+            </span>
+            <Clock className="w-4 h-4 text-amber-500 group-hover:scale-110 transition-transform" />
           </div>
           <div className="text-2xl font-bold text-amber-600 mt-2">{myStats.inProgress}</div>
-          <span className="text-[11px] text-slate-400">Crew dispatched</span>
-        </div>
+          <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-100">
+            <span className="text-[11px] text-slate-400">Crew dispatched</span>
+            <span className="text-[10px] text-amber-600 font-bold group-hover:underline">Filter &rarr;</span>
+          </div>
+        </Link>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+        <Link
+          to="/citizen/my-reports?status=resolved"
+          className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md hover:border-emerald-400 hover:scale-102 transition-all cursor-pointer group flex flex-col justify-between"
+          title="Click to view verified complete resolutions"
+        >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase text-slate-500">Resolved</span>
-            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+            <span className="text-xs font-bold uppercase text-emerald-600 group-hover:text-emerald-800 transition-colors">
+              Resolved
+            </span>
+            <CheckCircle2 className="w-4 h-4 text-emerald-500 group-hover:scale-110 transition-transform" />
           </div>
           <div className="text-2xl font-bold text-emerald-600 mt-2">{myStats.resolved}</div>
-          <span className="text-[11px] text-slate-400">Verified complete</span>
-        </div>
+          <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-100">
+            <span className="text-[11px] text-slate-400">Verified complete</span>
+            <span className="text-[10px] text-emerald-600 font-bold group-hover:underline">Filter &rarr;</span>
+          </div>
+        </Link>
       </div>
 
       {/* Main Content: Recent Reports + Notifications */}

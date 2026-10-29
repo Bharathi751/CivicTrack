@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useIssues } from '../../context/IssueContext';
 import { useAuth } from '../../context/AuthContext';
 import LocationPicker from '../../components/map/LocationPicker';
+import BackButton from '../../components/common/BackButton';
 import { findDuplicateCandidates } from '../../utils/duplicateDetector';
 import {
   MapPin,
@@ -103,9 +104,12 @@ export default function ReportIssue() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      {/* Back Navigation Bar */}
+      <BackButton label="Back to previous page" fallbackPath="/citizen" showDashboardLink={true} />
+
       {/* Title Header */}
-      <div className="mb-8">
+      <div>
         <div className="flex items-center gap-2 text-blue-600 text-xs font-bold uppercase tracking-wider mb-1">
           <Sparkles className="w-4 h-4" />
           Civic Complaint Registration (FR-02 to FR-06)

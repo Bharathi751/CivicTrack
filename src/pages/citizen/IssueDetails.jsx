@@ -6,6 +6,7 @@ import StatusBadge from '../../components/common/StatusBadge';
 import PriorityBadge from '../../components/common/PriorityBadge';
 import Timeline from '../../components/issues/Timeline';
 import LeafletMap from '../../components/map/LeafletMap';
+import BackButton from '../../components/common/BackButton';
 import {
   MapPin,
   Calendar,
@@ -122,18 +123,12 @@ export default function IssueDetails() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       {/* Back button & tracking bar */}
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <button
-          onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back
-        </button>
+        <BackButton label="Back to previous page" showDashboardLink={true} className="flex-1" />
 
         <div className="flex items-center gap-2">
           <button
             onClick={handleCopyCode}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-xs transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-xs transition cursor-pointer"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Share2 className="w-3.5 h-3.5" />}
             <span>{copied ? 'Code Copied!' : `Tracking: ${issue.tracking_code}`}</span>

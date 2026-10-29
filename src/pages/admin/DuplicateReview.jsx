@@ -3,6 +3,7 @@ import { useIssues } from '../../context/IssueContext';
 import { computeDuplicateScore } from '../../utils/duplicateDetector';
 import StatusBadge from '../../components/common/StatusBadge';
 import PriorityBadge from '../../components/common/PriorityBadge';
+import BackButton from '../../components/common/BackButton';
 import {
   CopyCheck,
   Check,
@@ -74,7 +75,10 @@ export default function DuplicateReview() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-6">
+      {/* Back Navigation Bar */}
+      <BackButton label="Back to previous page" fallbackPath="/admin" showDashboardLink={true} />
+
       {/* Title & Info */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-4">
@@ -176,7 +180,14 @@ export default function DuplicateReview() {
                     </span>
                   </div>
 
-                  <h4 className="font-bold text-slate-900 text-sm">{pair.master.title}</h4>
+                  <Link
+                    to={`/issue/${pair.master.issue_id}`}
+                    className="block group/link cursor-pointer"
+                  >
+                    <h4 className="font-bold text-slate-900 text-sm group-hover/link:text-indigo-600 transition-colors">
+                      {pair.master.title} &rarr;
+                    </h4>
+                  </Link>
                   <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">
                     {pair.master.description}
                   </p>
@@ -196,12 +207,22 @@ export default function DuplicateReview() {
                     <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-200 text-amber-900">
                       Candidate Duplicate (Newer)
                     </span>
-                    <span className="font-mono text-xs font-bold text-amber-800">
+                    <Link
+                      to={`/issue/${pair.candidate.issue_id}`}
+                      className="font-mono text-xs font-bold text-amber-800 hover:underline cursor-pointer"
+                    >
                       {pair.candidate.tracking_code}
-                    </span>
+                    </Link>
                   </div>
 
-                  <h4 className="font-bold text-slate-900 text-sm">{pair.candidate.title}</h4>
+                  <Link
+                    to={`/issue/${pair.candidate.issue_id}`}
+                    className="block group/cand cursor-pointer"
+                  >
+                    <h4 className="font-bold text-slate-900 text-sm group-hover/cand:text-amber-800 transition-colors">
+                      {pair.candidate.title} &rarr;
+                    </h4>
+                  </Link>
                   <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">
                     {pair.candidate.description}
                   </p>

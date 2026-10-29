@@ -115,43 +115,87 @@ export default function Home() {
       {/* Live Statistics Cards */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-md">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Total Registered</span>
-              <Building2 className="w-5 h-5 text-blue-600" />
+          <Link
+            to="/map"
+            className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-md hover:shadow-xl hover:border-blue-400 hover:scale-102 transition-all cursor-pointer group flex flex-col justify-between"
+            title="Click to explore all civic reports on the interactive public map"
+          >
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500 group-hover:text-blue-700 transition-colors">
+                  Total Registered
+                </span>
+                <Building2 className="w-5 h-5 text-blue-600 group-hover:scale-110 transition-transform" />
+              </div>
+              <div className="text-3xl font-extrabold text-slate-900 mt-2">{stats.total}</div>
             </div>
-            <div className="text-3xl font-extrabold text-slate-900 mt-2">{stats.total}</div>
-            <p className="text-xs text-slate-500 mt-1">Across all municipal wards</p>
-          </div>
+            <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-100">
+              <span className="text-xs text-slate-500">Across all municipal wards</span>
+              <span className="text-[10px] text-blue-600 font-bold group-hover:underline">Explore map &rarr;</span>
+            </div>
+          </Link>
 
-          <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-md">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">In Active Repair</span>
-              <Clock className="w-5 h-5 text-amber-500" />
+          <Link
+            to="/map"
+            className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-md hover:shadow-xl hover:border-amber-400 hover:scale-102 transition-all cursor-pointer group flex flex-col justify-between"
+            title="Click to view active repair operations on the map"
+          >
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-amber-600">
+                  In Active Repair
+                </span>
+                <Clock className="w-5 h-5 text-amber-500 group-hover:scale-110 transition-transform" />
+              </div>
+              <div className="text-3xl font-extrabold text-amber-600 mt-2">
+                {stats.inProgress + stats.assigned}
+              </div>
             </div>
-            <div className="text-3xl font-extrabold text-amber-600 mt-2">
-              {stats.inProgress + stats.assigned}
+            <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-100">
+              <span className="text-xs text-slate-500">Vendors & crews on site</span>
+              <span className="text-[10px] text-amber-600 font-bold group-hover:underline">View live &rarr;</span>
             </div>
-            <p className="text-xs text-slate-500 mt-1">Vendors & crews on site</p>
-          </div>
+          </Link>
 
-          <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-md">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Resolved & Closed</span>
-              <CheckCircle className="w-5 h-5 text-emerald-600" />
+          <Link
+            to="/map"
+            className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-md hover:shadow-xl hover:border-emerald-400 hover:scale-102 transition-all cursor-pointer group flex flex-col justify-between"
+            title="Click to view resolved community fixes on map"
+          >
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">
+                  Resolved & Closed
+                </span>
+                <CheckCircle className="w-5 h-5 text-emerald-600 group-hover:scale-110 transition-transform" />
+              </div>
+              <div className="text-3xl font-extrabold text-emerald-600 mt-2">{stats.resolved}</div>
             </div>
-            <div className="text-3xl font-extrabold text-emerald-600 mt-2">{stats.resolved}</div>
-            <p className="text-xs text-slate-500 mt-1">{stats.resolutionRate}% resolution success</p>
-          </div>
+            <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-100">
+              <span className="text-xs text-slate-500">{stats.resolutionRate}% success</span>
+              <span className="text-[10px] text-emerald-600 font-bold group-hover:underline">View on map &rarr;</span>
+            </div>
+          </Link>
 
-          <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-md">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Urgent Safety Flags</span>
-              <AlertTriangle className="w-5 h-5 text-rose-500" />
+          <Link
+            to="/map"
+            className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-md hover:shadow-xl hover:border-rose-400 hover:scale-102 transition-all cursor-pointer group flex flex-col justify-between"
+            title="Click to view emergency hazard hotspots on map"
+          >
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-rose-600">
+                  Urgent Safety Flags
+                </span>
+                <AlertTriangle className="w-5 h-5 text-rose-500 group-hover:scale-110 transition-transform" />
+              </div>
+              <div className="text-3xl font-extrabold text-rose-600 mt-2">{stats.urgentCount}</div>
             </div>
-            <div className="text-3xl font-extrabold text-rose-600 mt-2">{stats.urgentCount}</div>
-            <p className="text-xs text-slate-500 mt-1">Priority dispatch alerts</p>
-          </div>
+            <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-100">
+              <span className="text-xs text-slate-500">Priority dispatch alerts</span>
+              <span className="text-[10px] text-rose-600 font-bold group-hover:underline">Track on map &rarr;</span>
+            </div>
+          </Link>
         </div>
       </section>
 

@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useIssues } from '../../context/IssueContext';
 import LeafletMap from '../../components/map/LeafletMap';
 import IssueCard from '../../components/issues/IssueCard';
+import BackButton from '../../components/common/BackButton';
 import { Filter, Layers, MapPin, Search } from 'lucide-react';
 
 export default function PublicMap() {
@@ -34,7 +35,10 @@ export default function PublicMap() {
   }, [issues, selectedCategory, selectedStatus, urgentOnly, searchTerm]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-5">
+      {/* Back Navigation Bar */}
+      <BackButton label="Back to previous page" showDashboardLink={true} />
+
       {/* Header and Filter Controls */}
       <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-4">

@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import StatusBadge from '../../components/common/StatusBadge';
 import PriorityBadge from '../../components/common/PriorityBadge';
 import Timeline from '../../components/issues/Timeline';
+import BackButton from '../../components/common/BackButton';
 import {
   Search,
   MapPin,
@@ -89,7 +90,10 @@ export default function TrackIssue() {
   const currentStep = matchedIssue ? getStepProgress(matchedIssue.status) : 0;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      {/* Back Navigation Bar */}
+      <BackButton label="Back to previous page" showDashboardLink={true} />
+
       {/* Search Header */}
       <div className="text-center space-y-3">
         <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">

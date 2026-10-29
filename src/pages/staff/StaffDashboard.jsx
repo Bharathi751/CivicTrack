@@ -16,7 +16,7 @@ import {
   Navigation,
   FileCheck
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 const COMPLETION_PHOTOS = [
   {
@@ -42,7 +42,14 @@ export default function StaffDashboard() {
     (i) => i.assigned_to === currentUser?.user_id || (!i.assigned_to && i.status === 'assigned')
   );
 
-  const [activeTab, setActiveTab] = useState('active'); // 'active' | 'resolved' | 'all'
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentTabParam = searchParams.get('tab') || 'active';
+  const activeTab = currentTabParam;
+
+  const setActiveTab = (newTab) => {
+    setSearchParams({ tab: newTab });
+  };
+
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
@@ -54,6 +61,7 @@ export default function StaffDashboard() {
   const filteredIssues = assignedIssues.filter((i) => {
     if (activeTab === 'active') return ['assigned', 'in_progress', 'reopened'].includes(i.status);
     if (activeTab === 'resolved') return i.status === 'resolved';
+    if (activeTab === 'urgent') return i.priority === 'urgent' && i.status !== 'resolved';
     return true;
   });
 
@@ -114,42 +122,98 @@ export default function StaffDashboard() {
         </div>
       </div>
 
-      {/* KPI Cards */}
+      {/* KPI Cards (100% Clickable & Tab Dynamic) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+        {/* Total Assigned */}
+        <div
+          onClick={() => setActiveTab('all')}
+          className={`p-5 rounded-2xl border transition-all cursor-pointer shadow-xs flex flex-col justify-between ${
+            activeTab === 'all'
+              ? 'bg-slate-50 border-slate-600 ring-2 ring-slate-300'
+              : 'bg-white border-slate-200/90 hover:border-slate-400 hover:scale-102 hover:shadow-md'
+          }`}
+          title="Click to view all work orders"
+        >
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase text-slate-500">Total Assigned</span>
-            <Calendar className="w-4 h-4 text-slate-400" />
+            <Calendar className="w-4 h-4 text-slate-500" />
           </div>
-          <div className="text-2xl font-bold text-slate-900 mt-2">{vendorStats.totalAssigned}</div>
-          <span className="text-[11px] text-slate-400">Total work orders</span>
+          <div className="text-2xl font-extrabold text-slate-900 mt-2">{vendorStats.totalAssigned}</div>
+          <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-100">
+            <span className="text-[11px] text-slate-400">Total work orders</span>
+            <span className="text-[10px] text-slate-700 font-bold">
+              {activeTab === 'all' ? '● Active' : 'Filter &rarr;'}
+            </span>
+          </div>
         </div>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+        {/* In Active Progress */}
+        <div
+          onClick={() => setActiveTab('active')}
+          className={`p-5 rounded-2xl border transition-all cursor-pointer shadow-xs flex flex-col justify-between ${
+            activeTab === 'active'
+              ? 'bg-amber-50/70 border-amber-500 ring-2 ring-amber-200'
+              : 'bg-white border-slate-200/90 hover:border-amber-400 hover:scale-102 hover:shadow-md'
+          }`}
+          title="Click to view work orders in active progress"
+        >
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase text-amber-600">In Active Progress</span>
             <Clock className="w-4 h-4 text-amber-500" />
           </div>
-          <div className="text-2xl font-bold text-amber-600 mt-2">{vendorStats.activeWork}</div>
-          <span className="text-[11px] text-slate-400">Crews currently on-site</span>
+          <div className="text-2xl font-extrabold text-amber-600 mt-2">{vendorStats.activeWork}</div>
+          <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-100">
+            <span className="text-[11px] text-slate-400">Crews currently on-site</span>
+            <span className="text-[10px] text-amber-600 font-bold">
+              {activeTab === 'active' ? '● Active' : 'Filter &rarr;'}
+            </span>
+          </div>
         </div>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+        {/* Completed & Verified */}
+        <div
+          onClick={() => setActiveTab('resolved')}
+          className={`p-5 rounded-2xl border transition-all cursor-pointer shadow-xs flex flex-col justify-between ${
+            activeTab === 'resolved'
+              ? 'bg-emerald-50/70 border-emerald-500 ring-2 ring-emerald-200'
+              : 'bg-white border-slate-200/90 hover:border-emerald-400 hover:scale-102 hover:shadow-md'
+          }`}
+          title="Click to view completed and verified jobs"
+        >
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase text-emerald-600">Completed & Verified</span>
             <CheckCircle2 className="w-4 h-4 text-emerald-500" />
           </div>
-          <div className="text-2xl font-bold text-emerald-600 mt-2">{vendorStats.completed}</div>
-          <span className="text-[11px] text-emerald-600 font-semibold">Repairs closed</span>
+          <div className="text-2xl font-extrabold text-emerald-600 mt-2">{vendorStats.completed}</div>
+          <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-100">
+            <span className="text-[11px] text-emerald-600 font-semibold">Repairs closed</span>
+            <span className="text-[10px] text-emerald-600 font-bold">
+              {activeTab === 'resolved' ? '● Active' : 'Filter &rarr;'}
+            </span>
+          </div>
         </div>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+        {/* Urgent Hazards */}
+        <div
+          onClick={() => setActiveTab('urgent')}
+          className={`p-5 rounded-2xl border transition-all cursor-pointer shadow-xs flex flex-col justify-between ${
+            activeTab === 'urgent'
+              ? 'bg-rose-50/70 border-rose-500 ring-2 ring-rose-200'
+              : 'bg-white border-slate-200/90 hover:border-rose-400 hover:scale-102 hover:shadow-md'
+          }`}
+          title="Click to view urgent hazards"
+        >
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase text-rose-600">Urgent Hazards</span>
             <AlertTriangle className="w-4 h-4 text-rose-500" />
           </div>
-          <div className="text-2xl font-bold text-rose-600 mt-2">{vendorStats.urgent}</div>
-          <span className="text-[11px] text-slate-400">Immediate attention needed</span>
+          <div className="text-2xl font-extrabold text-rose-600 mt-2">{vendorStats.urgent}</div>
+          <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-100">
+            <span className="text-[11px] text-slate-400">Immediate attention</span>
+            <span className="text-[10px] text-rose-600 font-bold">
+              {activeTab === 'urgent' ? '● Active' : 'Filter &rarr;'}
+            </span>
+          </div>
         </div>
       </div>
 

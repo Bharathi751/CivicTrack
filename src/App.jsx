@@ -6,7 +6,12 @@ import { IssueProvider } from './context/IssueContext';
 // Common Components
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
-import DemoBanner from './components/common/DemoBanner';
+import ProfileSettingsModal from './components/common/ProfileSettingsModal';
+import ScrollToTop from './components/common/ScrollToTop';
+
+// Layouts with Side Navigation
+import AdminLayout from './components/admin/AdminLayout';
+import StaffLayout from './components/staff/StaffLayout';
 
 // Public Pages
 import Home from './pages/public/Home';
@@ -23,6 +28,7 @@ import IssueDetails from './pages/citizen/IssueDetails';
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AllReports from './pages/admin/AllReports';
+import VendorManagement from './pages/admin/VendorManagement';
 import DuplicateReview from './pages/admin/DuplicateReview';
 import HotspotAnalytics from './pages/admin/HotspotAnalytics';
 
@@ -33,12 +39,15 @@ export default function App() {
   return (
     <AuthProvider>
       <IssueProvider>
-        <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800 antialiased">
-          {/* Top Demo Simulator Bar for instant role-testing & grading */}
-          <DemoBanner />
+        {/* Automatic Scroll Restoration & Top Reset */}
+        <ScrollToTop />
 
-          {/* Sticky Navigation */}
+        <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800 antialiased">
+          {/* Main Sticky Navigation */}
           <Navbar />
+
+          {/* Global Profile & Account Settings Modal */}
+          <ProfileSettingsModal />
 
           {/* Main View Area */}
           <main className="flex-1">
@@ -57,14 +66,57 @@ export default function App() {
               {/* Unified Issue Details & History Route */}
               <Route path="/issue/:id" element={<IssueDetails />} />
 
-              {/* Municipal Admin Routes */}
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/admin/reports" element={<AllReports />} />
-              <Route path="/admin/duplicates" element={<DuplicateReview />} />
-              <Route path="/admin/hotspots" element={<HotspotAnalytics />} />
+              {/* Municipal Admin Routes (Protected with Admin Sidebar Navigation) */}
+              <Route
+                path="/admin"
+                element={
+                  <AdminLayout>
+                    <AdminDashboard />
+                  </AdminLayout>
+                }
+              />
+              <Route
+                path="/admin/reports"
+                element={
+                  <AdminLayout>
+                    <AllReports />
+                  </AdminLayout>
+                }
+              />
+              <Route
+                path="/admin/vendors"
+                element={
+                  <AdminLayout>
+                    <VendorManagement />
+                  </AdminLayout>
+                }
+              />
+              <Route
+                path="/admin/duplicates"
+                element={
+                  <AdminLayout>
+                    <DuplicateReview />
+                  </AdminLayout>
+                }
+              />
+              <Route
+                path="/admin/hotspots"
+                element={
+                  <AdminLayout>
+                    <HotspotAnalytics />
+                  </AdminLayout>
+                }
+              />
 
-              {/* Staff & Maintenance Vendor Routes */}
-              <Route path="/staff" element={<StaffDashboard />} />
+              {/* Staff & Maintenance Vendor Routes (Protected with Vendor Sidebar Navigation) */}
+              <Route
+                path="/staff"
+                element={
+                  <StaffLayout>
+                    <StaffDashboard />
+                  </StaffLayout>
+                }
+              />
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />

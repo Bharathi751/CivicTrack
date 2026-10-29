@@ -366,6 +366,28 @@ export function IssueProvider({ children }) {
       .sort((a, b) => new Date(b.changed_at) - new Date(a.changed_at));
   };
 
+  // Synchronize issues when a user changes their profile name or contact details
+  const syncUserIssues = (updatedUser) => {
+    if (!updatedUser) return;
+    const allIssues = Storage.getIssues();
+    const updated = allIssues.map((issue) => {
+      let changed = false;
+      let newIssue = { ...issue };
+      if (issue.user_id === updatedUser.user_id && issue.citizen_name !== updatedUser.name) {
+        newIssue.citizen_name = updatedUser.name;
+        if (updatedUser.phone) newIssue.citizen_phone = updatedUser.phone;
+        changed = true;
+      }
+      if (issue.assigned_to === updatedUser.user_id && issue.assigned_to_name !== updatedUser.name) {
+        newIssue.assigned_to_name = updatedUser.name;
+        changed = true;
+      }
+      return changed ? newIssue : issue;
+    });
+    setIssues(updated);
+    Storage.setIssues(updated);
+  };
+
   return (
     <IssueContext.Provider
       value={{
@@ -384,7 +406,8 @@ export function IssueProvider({ children }) {
         dismissDuplicateCandidate,
         markNotificationRead,
         markAllNotificationsRead,
-        getIssueHistory
+        getIssueHistory,
+        syncUserIssues
       }}
     >
       {children}

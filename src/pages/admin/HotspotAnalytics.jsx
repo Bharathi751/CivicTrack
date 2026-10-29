@@ -1,13 +1,17 @@
 import React from 'react';
 import { useIssues } from '../../context/IssueContext';
 import HotspotMap from '../../components/map/HotspotMap';
+import BackButton from '../../components/common/BackButton';
 import { Flame, Info, AlertTriangle, ShieldCheck } from 'lucide-react';
 
 export default function HotspotAnalytics() {
   const { issues, categories } = useIssues();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-6">
+      {/* Back Navigation Bar */}
+      <BackButton label="Back to previous page" fallbackPath="/admin" showDashboardLink={true} />
+
       {/* Title */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-3">
         <div className="flex items-center gap-2 text-rose-600 text-xs font-bold uppercase tracking-wider">
